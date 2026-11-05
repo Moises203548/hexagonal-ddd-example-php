@@ -156,4 +156,47 @@ final class DependencyInjection
             self::getUserRepository()
         );
     }
+
+    // ------------------------------------------------------------
+    // Canciones
+    // ------------------------------------------------------------
+
+    public static function getSongPersistenceMapper(): SongPersistenceMapper
+    {
+        ClassLoader::loadClass('SongPersistenceMapper');
+
+        return new SongPersistenceMapper();
+    }
+
+    public static function getSongRepository(): SongRepositoryMySQL
+    {
+        ClassLoader::loadClass('SongRepositoryMySQL');
+
+        return new SongRepositoryMySQL(
+            self::getPdo(),
+            self::getSongPersistenceMapper()
+        );
+    }
+
+    public static function getSongWebMapper(): SongWebMapper
+    {
+        ClassLoader::loadClass('SongWebMapper');
+
+        return new SongWebMapper();
+    }
+
+    public static function getSongController(): SongController
+    {
+        ClassLoader::loadClass('SongController');
+        $repository = self::getSongRepository();
+
+        return new SongController(
+            new CreateSongService($repository, $repository),
+            new UpdateSongService($repository, $repository, $repository),
+            new DeleteSongService($repository, $repository),
+            new GetSongByIdService($repository),
+            new GetAllSongsService($repository),
+            self::getSongWebMapper()
+        );
+    }
 }
