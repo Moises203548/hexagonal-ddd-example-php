@@ -1,0 +1,23 @@
+{
+  "info": { "name": "CRUDL Canciones", "description": "Postman conserva la cookie de sesión: ejecutar primero 'Login'.", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [ { "key": "baseUrl", "value": "http://localhost:8000/index.php" } ],
+  "item": [
+    { "name": "Login", "request": { "method": "POST", "url": "{{baseUrl}}?route=auth.authenticate",
+      "body": { "mode": "urlencoded", "urlencoded": [ {"key":"email","value":"admin@crud.com"}, {"key":"password","value":"Admin12345"} ] } } },
+    { "name": "Listar", "request": { "method": "GET", "url": "{{baseUrl}}?route=songs.index" } },
+    { "name": "Buscar", "request": { "method": "GET", "url": "{{baseUrl}}?route=songs.index&q=banda" } },
+    { "name": "Registrar", "request": { "method": "POST", "url": "{{baseUrl}}?route=songs.store",
+      "body": { "mode": "urlencoded", "urlencoded": [
+        {"key":"name","value":"Mi canción"},{"key":"rhythm","value":"POP"},{"key":"duration","value":"03:30"},
+        {"key":"album","value":"Mi álbum"},{"key":"position","value":"2"},{"key":"band","value":"Mi banda"},
+        {"key":"performer","value":"Intérprete"},{"key":"author","value":"Autor"},{"key":"release_date","value":"2021-03-15"} ] } } },
+    { "name": "Ver formulario de edición", "request": { "method": "GET", "url": "{{baseUrl}}?route=songs.edit&id=1" } },
+    { "name": "Actualizar", "request": { "method": "POST", "url": "{{baseUrl}}?route=songs.update",
+      "body": { "mode": "urlencoded", "urlencoded": [
+        {"key":"id","value":"1"},{"key":"name","value":"Canción editada"},{"key":"rhythm","value":"ROCK"},{"key":"duration","value":"04:10"},
+        {"key":"album","value":"Mi álbum"},{"key":"position","value":"2"},{"key":"band","value":"Mi banda"},
+        {"key":"performer","value":"Intérprete"},{"key":"author","value":"Autor"},{"key":"release_date","value":"2021-03-15"} ] } } },
+    { "name": "Eliminar", "request": { "method": "POST", "url": "{{baseUrl}}?route=songs.delete",
+      "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"1"} ] } } }
+  ]
+}
