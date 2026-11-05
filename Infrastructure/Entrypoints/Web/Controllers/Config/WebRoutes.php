@@ -42,6 +42,30 @@ final class WebRoutes
                 'method' => 'POST',
                 'action' => 'delete',
             ),
+            'songs.index' => array(
+                'method' => 'GET',
+                'action' => 'song.index',
+            ),
+            'songs.create' => array(
+                'method' => 'GET',
+                'action' => 'song.create',
+            ),
+            'songs.store' => array(
+                'method' => 'POST',
+                'action' => 'song.store',
+            ),
+            'songs.edit' => array(
+                'method' => 'GET',
+                'action' => 'song.edit',
+            ),
+            'songs.update' => array(
+                'method' => 'POST',
+                'action' => 'song.update',
+            ),
+            'songs.delete' => array(
+                'method' => 'POST',
+                'action' => 'song.delete',
+            ),
             'auth.login' => array(
                 'method' => 'GET',
                 'action' => 'login',

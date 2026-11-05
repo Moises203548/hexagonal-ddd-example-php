@@ -182,6 +182,66 @@ try {
             View::redirect('users.index');
             break;
 
+        // ----------------------------------------------------------
+        // Canciones (CRUDL)
+        // ----------------------------------------------------------
+
+        case 'song.index':
+            $search = trim((string) ($_GET['q'] ?? ''));
+            $page = max(1, (int) ($_GET['page'] ?? 1));
+            $limit = 10;
+            $songs = DependencyInjection::getSongController()->list($search === '' ? null : $search, $page, $limit);
+            View::render('songs/list', array(
+                'pageTitle' => 'Lista de canciones',
+                'songs' => $songs,
+                'search' => $search,
+                'page' => $page,
+                'limit' => $limit,
+                'message' => Flash::message(),
+                'success' => Flash::success(),
+            ));
+            break;
+
+        case 'song.create':
+            View::render('songs/create', array(
+                'pageTitle' => 'Registrar canción',
+                'rhythmOptions' => SongRhythmEnum::values(),
+                'message' => Flash::message(),
+                'old' => Flash::old(),
+            ));
+            break;
+
+        case 'song.store':
+            DependencyInjection::getSongController()->create($_POST);
+            Flash::setSuccess('Canción registrada correctamente.');
+            View::redirect('songs.index');
+            break;
+
+        case 'song.edit':
+            $songId = (int) ($_GET['id'] ?? 0);
+            $song = DependencyInjection::getSongController()->find($songId);
+            $old = Flash::old();
+            View::render('songs/edit', array(
+                'pageTitle' => 'Editar canción',
+                'songId' => $songId,
+                'rhythmOptions' => SongRhythmEnum::values(),
+                'values' => !empty($old) ? $old : $song->toFormValues(),
+                'message' => Flash::message(),
+            ));
+            break;
+
+        case 'song.update':
+            DependencyInjection::getSongController()->update((int) ($_POST['id'] ?? 0), $_POST);
+            Flash::setSuccess('Canción actualizada correctamente.');
+            View::redirect('songs.index');
+            break;
+
+        case 'song.delete':
+            DependencyInjection::getSongController()->delete((int) ($_POST['id'] ?? 0));
+            Flash::setSuccess('Canción eliminada correctamente.');
+            View::redirect('songs.index');
+            break;
+
         case 'login':
             if (isLoggedIn()) {
                 View::redirect('home');
@@ -295,6 +355,22 @@ try {
             Flash::setOld(getUpdateUserFormData());
             header('Location: ?route=users.edit&id=' . urlencode($updateId));
             exit;
+
+        case 'songs.store':
+            Flash::setOld($_POST);
+            View::redirect('songs.create');
+            break;
+
+        case 'songs.update':
+            $songUpdateId = (int) ($_POST['id'] ?? 0);
+            Flash::setOld($_POST);
+            header('Location: ?route=songs.edit&id=' . $songUpdateId);
+            exit;
+
+        case 'songs.edit':
+        case 'songs.delete':
+            View::redirect('songs.index');
+            break;
 
         case 'auth.authenticate':
             Flash::setOld(array('email' => trim(strtolower((string) ($_POST['email'] ?? '')))));
