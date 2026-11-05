@@ -114,3 +114,14 @@ Aplicación web PHP para la gestión de usuarios: registro, listado, visualizaci
 
 - Credenciales fuera del código fuente y del historial de git
 
+---
+
+## Módulo Canciones (ejercicio 20)
+
+CRUDL de la entidad **Cancion** (nombre, ritmo, duración, álbum, posición en el álbum, banda, intérprete, autor, fecha de lanzamiento), con la misma arquitectura hexagonal del módulo de usuarios. Rutas protegidas por sesión: `?route=songs.index | songs.create | songs.edit`.
+
+### Puesta en marcha
+1. Crear la BD: ejecutar `Infrastructure/Adapters/Persistence/MySQL/Database/mysql/database.sql` (crea `users`, `songs` y el usuario `admin@crud.com` / `Admin12345`).
+2. `cp .env.example .env` y ajustar `DB_USERNAME` / `DB_PASSWORD`.
+3. Apache (XAMPP) con la carpeta en `htdocs`, o `php -S localhost:8000 -t public` (sin estilos, ver nota).
+4. Docker: `docker compose up --build` y abrir `http://localhost:8080/public/index.php`.
